@@ -1,0 +1,25 @@
+{
+  "name": "product-engineering-os",
+  "owner": {
+    "name": "PEOS maintainers"
+  },
+  "metadata": {
+    "description": "A governed product-engineering operating layer for human-agent teams.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "product-engineering-os",
+      "source": "./plugins/product-engineering-os",
+      "description": "A governed product-engineering operating layer for human-agent teams.",
+      "version": "0.1.0",
+      "category": "development",
+      "tags": [
+        "product",
+        "engineering",
+        "brownfield",
+        "governance"
+      ]
+    }
+  ]
+}

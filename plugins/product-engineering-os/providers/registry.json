@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "capabilities": {
+    "setup": {
+      "contract": "contracts/workspace.md",
+      "default_provider": "peos-native",
+      "adapter": "providers/native/setup.md"
+    },
+    "guide": {
+      "contract": "contracts/guide.md",
+      "default_provider": "peos-native",
+      "adapter": "providers/native/guide.md"
+    },
+    "shape": {
+      "contract": "contracts/product-requirement.md",
+      "default_provider": "bmad",
+      "adapter": "providers/bmad/shape.md"
+    },
+    "design": {
+      "contract": "contracts/change-spec.md",
+      "default_provider": "bmad",
+      "adapter": "providers/bmad/design.md"
+    },
+    "plan": {
+      "contract": "contracts/delivery-plan.md",
+      "default_provider": "bmad",
+      "adapter": "providers/bmad/plan.md"
+    },
+    "build": {
+      "contract": "contracts/implementation-record.md",
+      "default_provider": "bmad",
+      "adapter": "providers/bmad/build.md"
+    },
+    "diagnose": {
+      "contract": "contracts/diagnostic-report.md",
+      "default_provider": "peos-native",
+      "adapter": "providers/native/diagnose.md"
+    },
+    "verify": {
+      "contract": "contracts/review-report.md",
+      "default_provider": "bmad",
+      "adapter": "providers/bmad/verify.md"
+    },
+    "sync": {
+      "contract": "contracts/sync-record.md",
+      "default_provider": "peos-native",
+      "adapter": "providers/native/sync.md"
+    },
+    "learn": {
+      "contract": "contracts/learning-proposal.md",
+      "default_provider": "peos-native",
+      "adapter": "providers/native/learn.md"
+    }
+  }
+}
