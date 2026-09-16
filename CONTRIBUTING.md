@@ -21,6 +21,7 @@ Do not create long-lived `develop`, integration, or release branches. Release pr
 - New defaults must remain useful without client configuration.
 - Client overlays take precedence over bundled defaults and must survive plugin upgrades.
 - Provider-specific instructions belong under `providers/`; never leak them into public capability names.
+- BMAD and other workflow providers remain external dependencies. Do not copy their prompts, agents, workflows, templates, source, or documentation into PEOS. Adapter files may reference public provider entrypoints and normalize outputs only.
 
 ## Pull-request checklist
 
@@ -30,3 +31,4 @@ Do not create long-lived `develop`, integration, or release branches. Release pr
 - [ ] Security boundaries and human approvals are preserved.
 - [ ] Documentation and changelog are current.
 - [ ] `./scripts/validate.sh` passes.
+- [ ] No provider implementation or upstream-owned content was vendored.

@@ -53,6 +53,8 @@ Defaults use BMAD for lifecycle work and PEOS native adapters for routing, sync,
 3. Point only that capability’s `provider` value in `peos/config.yaml` to `file:peos/providers/<adapter>.md`.
 4. Add evaluation scenarios and migrate in-flight artifacts deliberately.
 
+Client customization must not copy or modify BMAD internals. Configure the external provider, contribute a needed change upstream, or replace the PEOS capability adapter while preserving its contract.
+
 Jira, Confluence, AWS, logs, and database access are disabled until the runtime already has an approved connection and `config.yaml` enables the adapter. Enabling an adapter does not grant credentials or bypass tool permissions.
 
 ## Resolution and upgrades

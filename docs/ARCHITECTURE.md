@@ -17,7 +17,7 @@ stable PEOS capabilities: guide / shape / design / plan / build / diagnose / ver
        +--> authorized integrations --> Jira / Confluence / AWS / logs / databases
 ```
 
-The dependency arrows point inward: a public skill may read a capability contract and call a provider adapter; a provider adapter must not redefine the public workflow. Client configuration selects providers but must not require contributors to invoke them directly.
+The dependency arrows point inward: a public skill may read a capability contract and call a provider adapter; a provider adapter must not redefine the public workflow. Client configuration selects providers but must not require contributors to invoke them directly. BMAD is resolved at runtime from its separately installed plugin. Its implementation is never copied into PEOS; the `providers/bmad/` directory contains PEOS-owned glue only. See `DEPENDENCY-POLICY.md`.
 
 ## Why BMAD plus delta specifications
 
@@ -62,6 +62,7 @@ The plugin contains no credentials and grants no authority. An adapter may use a
 - `skills/*/SKILL.md`: stable capability entrypoints and postconditions.
 - `contracts/*.md`: provider-independent output shape and lifecycle semantics.
 - `providers/registry.json`: capability-to-provider selection and fallback metadata.
+- `providers/dependencies.json`: external provider identity, distribution, ownership, and failure policy.
 - `providers/bmad/*.md`: exact BMAD invocation and normalization rules.
 - `providers/native/*.md`: small PEOS-owned operations where no external method is needed.
 - `agents/*.md`: role goals, tensions, scope, and handoff expectations.
