@@ -1,0 +1,68 @@
+schema_version: 1
+organization: "__ORGANIZATION_NAME__"
+mode: brownfield
+
+artifacts:
+  root: peos
+  changes: peos/changes
+  diagnostics: peos/diagnostics
+  decisions: peos/decisions
+
+providers:
+  setup: peos-native
+  guide: peos-native
+  shape: bmad
+  design: bmad
+  plan: bmad
+  build: bmad
+  diagnose: peos-native
+  verify: bmad
+  sync: peos-native
+  learn: peos-native
+
+routing:
+  default: auto
+  prefer_smallest_safe_workflow: true
+  quick_requires_clear_behavior: true
+  adr_for_durable_decisions_only: true
+
+governance:
+  product_intent_requires_human_approval: true
+  technical_decisions_require_engineering_approval: true
+  code_requires_engineering_approval: true
+  external_writes_require_explicit_request: true
+  agents_may_self_approve: false
+
+context:
+  system_map: peos/context/system-map.md
+  guideline_paths:
+    product: peos/guidelines/product.md
+    engineering: peos/guidelines/engineering.md
+    frontend: peos/guidelines/frontend.md
+    backend: peos/guidelines/backend.md
+    infrastructure: peos/guidelines/infrastructure.md
+    security: peos/guidelines/security.md
+    quality: peos/guidelines/quality.md
+
+repositories: []
+
+validation:
+  discover_repository_commands: true
+  require_acceptance_traceability: true
+  require_independent_review: true
+  record_checks_not_run: true
+
+integrations:
+  jira:
+    enabled: false
+  confluence:
+    enabled: false
+  aws:
+    enabled: false
+    default_access: read-only
+  logs:
+    enabled: false
+    default_access: read-only
+  database:
+    enabled: false
+    default_access: read-only

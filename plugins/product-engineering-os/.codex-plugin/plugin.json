@@ -1,0 +1,25 @@
+{
+  "name": "product-engineering-os",
+  "version": "0.1.0",
+  "description": "A governed product-engineering operating layer for human-agent teams.",
+  "author": {
+    "name": "PEOS maintainers"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Product Engineering Operating System",
+    "shortDescription": "Govern product work from discovery through delivery",
+    "longDescription": "Shape product intent, design safe brownfield changes, plan delivery, build with specialists, verify quality, and capture human feedback through stable provider-independent workflows.",
+    "developerName": "PEOS maintainers",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Product discovery",
+      "Technical design",
+      "Delivery planning",
+      "Implementation",
+      "Production diagnosis",
+      "Quality verification"
+    ],
+    "defaultPrompt": "Use PEOS to guide this product-engineering change from the appropriate lifecycle stage."
+  }
+}
