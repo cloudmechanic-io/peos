@@ -4,7 +4,7 @@
 
 PEOS gives product engineers, product owners, and coding agents one brownfield-first workflow from idea to verified change. It packages once for **Claude Code/Claude Teams and Codex/ChatGPT workspaces** while keeping the actual operating model independent of either platform.
 
-BMAD is the default workflow provider for discovery, requirements, design, planning, implementation, and review. PEOS does not expose BMAD as its public interface. Stable PEOS capabilities normalize outputs into Git-owned artifacts, so a provider can later be upgraded or replaced without retraining the team or changing the lifecycle.
+BMAD is the default workflow provider for discovery, requirements, design, planning, implementation, and review. It is installed separately as an external plugin dependency: **no BMAD prompts, agents, workflows, templates, or source files are copied into this repository**. PEOS exposes only thin provider adapters and stable capability contracts, so BMAD can be upgraded or replaced without retraining the team or changing the lifecycle. See the [dependency policy](docs/DEPENDENCY-POLICY.md).
 
 ## Start here
 
@@ -172,6 +172,7 @@ For dependency direction, read [Architecture](docs/ARCHITECTURE.md). For the res
 ## Current boundaries
 
 - BMAD must be installed separately; `install-local.sh` does this for supported CLIs.
+- BMAD is never vendored or redistributed by PEOS; its versioning, licensing, and updates remain upstream-owned.
 - Jira, Confluence, AWS, logs, and database access are adapters, not embedded credentials. The agent uses only tools already authorized in the user’s runtime. `/diagnose` provides the governed read-only procedure when those adapters are enabled.
 - External writes require explicit user intent and a read-back. Production infrastructure and database mutation are never implied by a PEOS workflow stage.
 - The initial release is private/internal and intentionally has no open-source license. Choose a license before public redistribution.

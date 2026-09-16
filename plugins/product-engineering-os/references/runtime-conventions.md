@@ -12,6 +12,8 @@ Apply these rules for every PEOS capability.
 
 Provider values `bmad` and `peos-native` resolve through the bundled registry. A client provider value may use `file:peos/providers/<adapter>.md`; resolve it only within the workspace, require it to name the same capability contract, and reject path traversal or contract/approval changes.
 
+BMAD resolves only through the separately installed dependency declared in `../providers/dependencies.json`. Never search for, copy, generate, or modify BMAD implementation files inside the workspace or PEOS plugin. The bundled `providers/bmad/` files are PEOS-owned invocation and normalization glue, not upstream workflow content.
+
 Do not preload all role files, all historical changes, or entire repositories. Summarize discovered context in `peos/context/system-map.md` only when it is durable and reviewed.
 
 ## Execution

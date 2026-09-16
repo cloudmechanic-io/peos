@@ -20,6 +20,7 @@ This is the maintainer-level inventory. Paths below are relative to the distribu
 | File | Responsibility |
 | --- | --- |
 | `docs/ARCHITECTURE.md` | Dependency direction, artifact model, role model, learning model, and versioning decisions. |
+| `docs/DEPENDENCY-POLICY.md` | Enforces BMAD and other providers as external dependencies rather than vendored source. |
 | `docs/CUSTOMIZING-CLIENTS.md` | Upgrade-safe client overlay and provider customization procedure. |
 | `docs/ROLLOUT.md` | Maintainer, pilot, organization, and integration rollout phases. |
 | `docs/TESTING.md` | Static, behavioral, and upgrade test procedure. |
@@ -96,6 +97,7 @@ All skill paths above are under `plugins/product-engineering-os/`.
 | File | Responsibility |
 | --- | --- |
 | `providers/registry.json` | Versioned map from every public capability to contract, default provider, and adapter. |
+| `providers/dependencies.json` | Declares separately installed providers, their upstream source, consumers, upgrade policy, and no-vendoring status. |
 | `providers/bmad/shape.md` | Maps PEOS discovery classes to BMAD brainstorming, brief/PRFAQ, PRD, and spec skills. |
 | `providers/bmad/design.md` | Maps technical analysis to BMAD spec/architecture while enforcing the PEOS delta. |
 | `providers/bmad/plan.md` | Maps planning to BMAD stories/sprint flows without forcing ticket creation. |

@@ -54,6 +54,7 @@ claude_manifest = load_json("plugins/product-engineering-os/.claude-plugin/plugi
 codex_marketplace = load_json(".agents/plugins/marketplace.json")
 claude_marketplace = load_json(".claude-plugin/marketplace.json")
 registry = load_json("plugins/product-engineering-os/providers/registry.json")
+dependencies = load_json("plugins/product-engineering-os/providers/dependencies.json")
 
 manifests = {
     "Codex manifest": codex_manifest,
@@ -124,6 +125,39 @@ for capability, definition in registry.get("capabilities", {}).items():
         target = PLUGIN / definition.get(key, "missing")
         if not target.is_file():
             fail(f"provider registry {capability!r} references missing {key}: {target.relative_to(ROOT)}")
+
+dependency_entries = dependencies.get("dependencies", [])
+bmad_dependencies = [item for item in dependency_entries if item.get("id") == "bmad"]
+if len(bmad_dependencies) != 1:
+    fail("dependencies.json must declare exactly one BMAD dependency")
+else:
+    bmad_dependency = bmad_dependencies[0]
+    expected_dependency_fields = {
+        "distribution": "external-plugin",
+        "repository": "bmad-code-org/bmad-plugins",
+        "marketplace": "bmad",
+        "plugin": "bmad-method",
+        "vendored": False,
+        "missing_dependency_behavior": "fail-closed-with-install-guidance",
+    }
+    for key, expected in expected_dependency_fields.items():
+        if bmad_dependency.get(key) != expected:
+            fail(f"BMAD dependency field {key!r} must be {expected!r}")
+    if set(bmad_dependency.get("required_for", [])) != {"shape", "design", "plan", "build", "verify"}:
+        fail("BMAD dependency consumers must match the BMAD-backed capabilities")
+
+bmad_adapter_dir = PLUGIN / "providers" / "bmad"
+expected_bmad_adapters = {"shape.md", "design.md", "plan.md", "build.md", "verify.md"}
+actual_bmad_entries = {path.name for path in bmad_adapter_dir.iterdir()} if bmad_adapter_dir.is_dir() else set()
+if actual_bmad_entries != expected_bmad_adapters:
+    fail(f"BMAD adapter directory may contain only thin adapter files: {sorted(actual_bmad_entries)}")
+
+forbidden_provider_directories = {".bmad", "_bmad", "bmad-method", "bmad-toolbox", "vendor", "vendors", "third_party", "third-party"}
+for path in ROOT.rglob("*"):
+    if ".git" in path.parts:
+        continue
+    if any(part.lower() in forbidden_provider_directories for part in path.relative_to(ROOT).parts):
+        fail(f"vendored provider directory is forbidden: {path.relative_to(ROOT)}")
 
 required_paths = [
     "plugins/product-engineering-os/references/runtime-conventions.md",

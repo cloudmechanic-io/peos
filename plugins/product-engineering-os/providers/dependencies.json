@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "dependencies": [
+    {
+      "id": "bmad",
+      "distribution": "external-plugin",
+      "repository": "bmad-code-org/bmad-plugins",
+      "marketplace": "bmad",
+      "plugin": "bmad-method",
+      "required_for": [
+        "shape",
+        "design",
+        "plan",
+        "build",
+        "verify"
+      ],
+      "vendored": false,
+      "upgrade_policy": "managed-and-tested-independently",
+      "missing_dependency_behavior": "fail-closed-with-install-guidance"
+    }
+  ]
+}
