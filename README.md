@@ -79,6 +79,156 @@ Every technical change spec uses an OpenSpec-inspired delta: **ADDED, MODIFIED, 
 
 These names are the product API. Provider mappings live in `providers/registry.json` and provider adapter files.
 
+## User guide: developing software with PEOS
+
+PEOS is for the whole product-engineering team:
+
+- Product contributors can brainstorm, shape requirements, define acceptance criteria, review product intent, and open pull requests containing product artifacts.
+- Engineers can analyze the current system, make technical decisions, plan delivery, implement, diagnose, and verify changes.
+- Product owners may approve product intent when client policy allows it.
+- Engineers retain approval of code, architecture, data, security, operations, and release readiness.
+- Agents prepare work and recommend decisions but never impersonate a human approver.
+
+### Initialize a workspace
+
+Open the umbrella folder that contains the relevant frontend, backend, and infrastructure repositories. Run `setup` if PEOS has not been initialized or the workspace mapping needs an audit:
+
+- Claude: `/product-engineering-os:setup`
+- Codex: select `$setup`, or ask “Use PEOS to set up this workspace.”
+
+Review and commit the resulting client-owned `peos/` overlay. Confirm the repository map, validation commands, owners, cross-repository contracts, environment boundaries, and discipline guidelines. External integrations should remain disabled until the runtime has an approved connection.
+
+### Start a change
+
+Describe the intended outcome in plain language and use `guide` when the path is unclear:
+
+- Claude: `/product-engineering-os:guide`
+- Codex: select `$guide`, or ask “Use PEOS to guide this change.”
+
+Example:
+
+> Use PEOS to guide a change that lets account administrators configure email delivery independently for every ticket event. Notification-center items must remain unchanged.
+
+Guide interprets the outcome, finds existing artifacts, classifies the work, selects relevant specialist perspectives, reports risks and lifecycle state, and chooses the smallest safe next capability. You can also invoke a capability directly when the desired stage is clear.
+
+### Quick change
+
+Use the quick path when behavior is clear, scope is local, rollback is straightforward, and there is no durable architecture, security, data, or compatibility decision:
+
+```text
+guide -> concise shape -> build -> verify
+```
+
+Keep current behavior, target behavior, acceptance criteria, constraints, non-goals, and technical notes concise. An ADR is not expected unless repository inspection reveals a durable decision.
+
+Example:
+
+> Use PEOS to fix the login form so a server error remains visible after a failed retry. Preserve the API and existing navigation. Use the quick path if repository evidence supports it.
+
+### Feature
+
+Use the feature path for a meaningful new or changed capability inside the existing product:
+
+```text
+guide -> shape -> product approval -> design -> technical decision
+      -> plan -> build one slice -> verify -> repeat as needed -> sync
+```
+
+Shape produces product current and target state, scope, non-goals, scenarios, success measures, and observable acceptance criteria. Design inspects the repositories and produces technical current and target state, explicit ADDED/MODIFIED/REMOVED/RENAMED behavior, compatibility, migration, failure behavior, rollout, rollback, observability, security, and validation. It creates an ADR only for a durable decision.
+
+Useful requests include:
+
+> Use PEOS to shape this feature. Interview me about users, current behavior, target behavior, scope, non-goals, success measures, and acceptance criteria. Stop when the product requirement is ready for human review.
+
+> Use PEOS to design the approved change. Inspect the affected repositories and produce the current and target technical state, explicit behavior delta, compatibility plan, rollout, rollback, and validation. Create an ADR only if warranted.
+
+### Strategic change or pivot
+
+Use the strategic path for high uncertainty, a pivot, a new product surface, or a major platform or data-ownership change:
+
+```text
+guide -> brainstorming/research -> product brief or PRFAQ -> PRD approval
+      -> architecture and ADRs -> staged plan -> build and verify
+```
+
+Example:
+
+> Use PEOS to explore whether we should move from one-off reports to a self-service operational-insights product. Stay in discovery until users, evidence, outcomes, assumptions, alternatives, risks, non-goals, and the smallest learning plan are clear.
+
+Strategic work should not jump from an idea directly to implementation.
+
+### Work with artifacts and approvals
+
+Change artifacts live under `peos/changes/<change-id>/`; ADRs live in `peos/decisions/`; material operational investigations live in `peos/diagnostics/`. Do not create every artifact for every change: classification controls the required ceremony.
+
+The normal lifecycle is:
+
+```text
+draft -> in-review -> approved -> implementing -> implemented -> verified -> closed
+```
+
+`blocked` may be used with a reason and owner. A material scope change returns affected artifacts to draft or creates a revision.
+
+Keep these distinctions explicit:
+
+- `in-review` means ready for a human, not approved;
+- implemented does not mean independently verified;
+- checks passing does not mean deployed;
+- deployed does not mean verified live;
+- Jira or Confluence publication does not grant product or engineering approval.
+
+### Implement and verify
+
+Ask `build` to implement one approved slice at a time:
+
+> Use PEOS to build slice 1 of `ticket-delivery-preferences`. Work only in the affected repositories, preserve unrelated changes, add tests, record checks not run, and stop if implementation would materially deviate from the approved design.
+
+Build inspects the exact area, loads only relevant specialist rules, preserves compatibility assumptions, records deviations, runs the cheapest relevant checks, and ends at `implemented`.
+
+Then run `verify`, preferably with a fresh reviewer context:
+
+> Use PEOS to independently verify `ticket-delivery-preferences`. Review the actual diff against approved acceptance criteria and technical deltas. Run relevant repository checks and report every gate as PASS, FAIL, OPEN, or NOT APPLICABLE.
+
+Verification covers acceptance criteria, tests, QA, architecture, security, compatibility, migrations, rollback, observability, operations, skipped checks, and residual risk proportional to the change.
+
+### Diagnose production or data questions
+
+Use `diagnose` for incidents, AWS/log investigation, observability, or approved operational data questions. Diagnosis is read-only by default and does not authorize a fix.
+
+> Use PEOS to diagnose elevated 5xx responses for the production reporting service during the last two hours. Confirm the account, region, service, and time window before querying. Use read-only access, bound the result volume, redact sensitive values, and separate observations from inference.
+
+If a code or infrastructure change is needed, return through `guide`. Do not mutate production or a database as part of diagnosis.
+
+### Publish approved artifacts
+
+Git artifacts are the source of truth. Use `sync` only when you explicitly want an external preview, creation, update, or reconciliation.
+
+> Use PEOS to preview how the approved delivery plan would map to Jira. Do not create anything yet.
+
+> Publish the approved product requirement to the configured Confluence space. Read the page back, compare it with the source, and record the canonical link and any divergence.
+
+The client supplies project, space, issue hierarchy, fields, and mappings. PEOS does not assume a universal Jira or Confluence schema.
+
+### Learn from review
+
+Use `learn` when repeated human feedback may deserve an organization rule:
+
+> Reviewers have repeatedly corrected this behavior: notification preferences may suppress email and push, but must never suppress notification-center persistence. Use PEOS to determine whether this should become a reusable guideline.
+
+Learn classifies feedback as one-off, change-specific, or reusable. Reusable feedback becomes a proposed guideline diff with evidence and an owner. It remains ineffective until humans review and merge it; PEOS does not claim the model has been trained.
+
+### Resume existing work
+
+Do not rely on conversation history as the system of record. Ask `guide` to read the versioned artifacts and current repository state:
+
+> Use PEOS to resume `ticket-delivery-preferences`. Report its lifecycle status and approvals, then continue with the next safe capability if no human decision is missing.
+
+### Write effective requests
+
+Include the intended outcome, known current behavior, constraints, non-goals, relevant repositories or environments, desired stage, external-action boundaries, and whether PEOS may continue or should stop for review. You do not need a rigid prompt template.
+
+When PEOS chooses the wrong amount of ceremony, ask `guide` to justify the classification using ambiguity, reversibility, contracts, migration, security, data, cross-repository impact, and rollback. Word count alone does not determine the workflow.
+
 ## Roles and subagents
 
 PEOS does not use four always-present agents. `product-engineering-lead` is the front door and invokes only the specialist lenses needed for the current stage:
@@ -167,7 +317,7 @@ Resolution order is **client overlay → detected repository evidence → bundle
 | `scripts/` | Validate, install, scaffold, version, and publish automation |
 | `evals/` | Human-readable acceptance scenarios for framework behavior |
 
-For dependency direction, read [Architecture](docs/ARCHITECTURE.md). For the responsibility of every shipped file, read the [File map](docs/FILE-MAP.md). For rollout and platform administration, read [Rollout](docs/ROLLOUT.md).
+For dependency direction and maintainer handover, read [Architecture](docs/ARCHITECTURE.md). For the responsibility of every shipped file, read the [File map](docs/FILE-MAP.md). For rollout and platform administration, read [Rollout](docs/ROLLOUT.md).
 
 ## Current boundaries
 
