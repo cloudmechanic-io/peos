@@ -1,6 +1,6 @@
 # File map
 
-This is the maintainer-level inventory. Paths below are relative to the distribution repository.
+This is the maintainer-level inventory of every shipped file. Paths below are relative to the distribution repository. Read this together with `docs/ARCHITECTURE.md`: this file explains what each file owns, while the architecture guide explains how the layers execute together and how to evolve them safely.
 
 ## Distribution root
 
@@ -138,3 +138,20 @@ All paths below are under `plugins/product-engineering-os/defaults/project/peos/
 | `templates/delivery-plan.md` | Editable client template for delivery slices. |
 | `templates/adr.md` | Editable client template for durable decisions. |
 | `templates/review-report.md` | Editable client template for independent verification. |
+
+## Where a framework change belongs
+
+| Change | Primary location | Reason |
+| --- | --- | --- |
+| Public capability behavior or postcondition | `skills/<capability>/SKILL.md` | Skills are the stable user-facing API. |
+| Artifact shape, lifecycle, approval, or provenance | `contracts/` | Contracts remain stable across providers and runtimes. |
+| BMAD invocation or normalization | `providers/bmad/` | Provider-specific behavior must stay behind the capability wrapper. |
+| PEOS-owned capability implementation | `providers/native/` | Native adapters implement PEOS procedures that do not need an external method. |
+| Specialist goals, tensions, or handoff | `agents/` | Roles define reasoning boundaries rather than complete workflows. |
+| Rule shared by multiple capabilities | `references/` | Shared rules should not be copied into every skill. |
+| Default for newly onboarded clients | `defaults/project/peos/` | Defaults are copied once and do not overwrite existing client overlays. |
+| Organization-specific rule | Client repository `peos/` overlay | Client policy must survive plugin upgrades. |
+| Platform discovery or presentation | Marketplace and plugin manifests | Platform packaging must not redefine lifecycle behavior. |
+| Package, scaffold, validation, or release automation | Root `scripts/` | These are maintainer operations, not agent capabilities. |
+
+When behavior changes, update the relevant scenario in `evals/scenarios.md`. When a public contract changes, assess semantic-version impact and migration of in-flight client artifacts.
